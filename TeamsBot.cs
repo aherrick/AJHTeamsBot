@@ -11,6 +11,12 @@ public class TeamsBot(Kernel kernel) : ActivityHandler
         CancellationToken cancellationToken
     )
     {
+        // Show typing indicator
+        await turnContext.SendActivityAsync(
+            new Activity { Type = ActivityTypes.Typing },
+            cancellationToken
+        );
+
         // Remove @mention text (for channel messages)
         var text = turnContext.Activity.RemoveRecipientMention()?.Trim().ToLowerInvariant() ?? "";
 
