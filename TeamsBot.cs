@@ -30,7 +30,7 @@ public class TeamsBot(Kernel kernel) : ActivityHandler
                 "build" => "🔨 Triggering a build... (not really — just a demo 😄)",
                 "ask" => string.IsNullOrWhiteSpace(arg)
                     ? "🤖 Please provide a prompt. Example: `!ask What's the weather?`"
-                    : "🤖 : "
+                    : "🤖 "
                         + (
                             (
                                 await kernel.InvokePromptAsync(
