@@ -1,9 +1,10 @@
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Schema;
+using Microsoft.SemanticKernel;
 
 namespace AJHTeamsBot;
 
-public class TeamsBot : ActivityHandler
+public class TeamsBot(Kernel kernel) : ActivityHandler
 {
     protected override async Task OnMessageActivityAsync(
         ITurnContext<IMessageActivity> turnContext,
@@ -15,19 +16,29 @@ public class TeamsBot : ActivityHandler
 
         string response;
 
-        // Check if the message starts with a command prefix
         if (text.StartsWith('!'))
         {
-            // Extract the command (remove the '/')
-            var command = text[1..];
+            var parts = text[1..].Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
+            var command = parts.FirstOrDefault() ?? "";
+            var arg = parts.Skip(1).FirstOrDefault() ?? "";
 
             response = command switch
             {
-                "hi" or "hello" => "👋 Hi there! I'm your Teams bot. How can I help you?",
                 "help" =>
                     "ℹ️ Try commands like `!status`, `!hello`, or `!build`. I’m here to assist your team.",
                 "status" => "✅ All systems are operational.",
                 "build" => "🔨 Triggering a build... (not really — just a demo 😄)",
+                "ask" => string.IsNullOrWhiteSpace(arg)
+                    ? "🤖 Please provide a prompt. Example: `!ask What's the weather?`"
+                    : "🤖 : "
+                        + (
+                            (
+                                await kernel.InvokePromptAsync(
+                                    arg,
+                                    cancellationToken: cancellationToken
+                                )
+                            ).GetValue<string>() ?? "No response."
+                        ),
                 _ => $"❓ Unknown command: `{command}`. Try `!help` to see available commands.",
             };
         }

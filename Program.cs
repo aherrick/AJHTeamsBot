@@ -2,8 +2,22 @@
 using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.Integration.AspNet.Core;
 using Microsoft.Bot.Connector.Authentication;
+using Microsoft.SemanticKernel;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// ai
+
+builder.Services.AddSingleton<Kernel>(
+    Kernel
+        .CreateBuilder()
+        .AddAzureOpenAIChatCompletion(
+            deploymentName: "gpt-4o",
+            endpoint: builder.Configuration["AzureOpenAI:Endpoint"],
+            apiKey: builder.Configuration["AzureOpenAI:ApiKey"]
+        )
+        .Build()
+);
 
 // Bot config
 builder.Services.AddSingleton<BotFrameworkAuthentication>(sp =>

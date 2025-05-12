@@ -3,10 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>5c885980-21f2-40b1-a34e-f2826ba19d34</UserSecretsId>
   </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.23.0" />
+		<PackageReference Include="Microsoft.SemanticKernel" Version="1.49.0" />
 	</ItemGroup>
 
 </Project>
