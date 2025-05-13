@@ -139,21 +139,14 @@ public class TeamsBot(Kernel kernel) : ActivityHandler
         CancellationToken cancellationToken
     )
     {
-        var conversationType = turnContext.Activity.Conversation.ConversationType;
-        var isChannel = conversationType == "channel";
-        var welcomeText = isChannel
-            ? "👋 Hello everyone! I'm your helpful bot. Mention me or say 'hi' to get started."
-            : "👋 Hi! Thanks for adding me — type 'hello' or ask me anything to begin.";
-
-        foreach (var member in membersAdded)
+        foreach (var member in turnContext.Activity.MembersAdded)
         {
             if (member.Id != turnContext.Activity.Recipient.Id)
             {
                 await turnContext.SendActivityAsync(
-                    MessageFactory.Text(welcomeText),
+                    MessageFactory.Text("Hello! Type '!help' to see commands."),
                     cancellationToken
                 );
-                break; // Only send once
             }
         }
     }
