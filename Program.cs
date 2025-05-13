@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // ai
 
-builder.Services.AddSingleton<Kernel>(
+builder.Services.AddSingleton(
     Kernel
         .CreateBuilder()
         .AddAzureOpenAIChatCompletion(
