@@ -358,7 +358,7 @@ public class TeamsBot(Kernel kernel) : ActivityHandler
                     new AdaptiveTextBlock
                     {
                         Id = "responseText",
-                        Text = "🤖 AI says: ",
+                        Text = "🤖 ",
                         Wrap = true,
                         Weight = AdaptiveTextWeight.Default,
                         Size = AdaptiveTextSize.Default,
