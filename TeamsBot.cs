@@ -9,12 +9,13 @@ namespace AJHTeamsBot;
 
 public class TeamsBot(Kernel kernel) : ActivityHandler
 {
-    //protected override async Task OnMessageActivityAsync(
-
     // In-memory storage for user chat history (use a database in production)
     private static readonly Dictionary<string, ChatHistory> UserChatHistory = [];
 
     private const int MaxHistoryLength = 10;
+
+    private IChatCompletionService ChatCompletionService { get; } =
+        kernel.Services.GetRequiredService<IChatCompletionService>();
 
     protected override async Task OnMessageActivityAsync(
         ITurnContext<IMessageActivity> turnContext,
@@ -70,9 +71,6 @@ public class TeamsBot(Kernel kernel) : ActivityHandler
 
             chatHistory.AddUserMessage(arg);
 
-            var chatCompletionService =
-                kernel.Services.GetRequiredService<IChatCompletionService>();
-
             async Task UpdateCardAsync(string chunk)
             {
                 ((AdaptiveTextBlock)card.Body[0]).Text += chunk;
@@ -88,7 +86,7 @@ public class TeamsBot(Kernel kernel) : ActivityHandler
             string lastPushedText = string.Empty;
 
             await foreach (
-                var update in chatCompletionService.GetStreamingChatMessageContentsAsync(
+                var update in ChatCompletionService.GetStreamingChatMessageContentsAsync(
                     chatHistory,
                     kernel: kernel,
                     cancellationToken: cancellationToken
