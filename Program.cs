@@ -25,7 +25,6 @@ builder.Services.AddSingleton<BotFrameworkAuthentication>(sp =>
     return new ConfigurationBotFrameworkAuthentication(builder.Configuration.GetSection("Bot"));
 });
 
-builder.Services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>();
 builder.Services.AddSingleton<CloudAdapter, AdapterWithErrorHandler>();
 builder.Services.AddSingleton<IBot, TeamsBot>();
 
