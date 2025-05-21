@@ -29,6 +29,8 @@ builder.Services.AddSingleton<IBotFrameworkHttpAdapter, AdapterWithErrorHandler>
 builder.Services.AddSingleton<CloudAdapter, AdapterWithErrorHandler>();
 builder.Services.AddSingleton<IBot, TeamsBot>();
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -37,6 +39,8 @@ app.UseHttpsRedirection();
 
 // ✅ Simple GET health check route
 app.MapGet("/", () => Results.Ok("🤖 Bot app is up and running."));
+
+app.MapHealthChecks("/health");
 
 app.MapPost(
     "/api/messages",
