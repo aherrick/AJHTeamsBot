@@ -23,8 +23,13 @@ public class TeamsBot(Kernel kernel) : ActivityHandler
     )
     {
         // Show typing indicator
-        await turnContext.SendActivityAsync(
-            new Activity { Type = ActivityTypes.Typing },
+        //await turnContext.SendActivityAsync(
+        //    new Activity { Type = ActivityTypes.Typing },
+        //    cancellationToken
+        //);
+
+        _ = await turnContext.SendActivitiesAsync(
+            [new Activity { Type = ActivityTypes.Typing }],
             cancellationToken
         );
 
